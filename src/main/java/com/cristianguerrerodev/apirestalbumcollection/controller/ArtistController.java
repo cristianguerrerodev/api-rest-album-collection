@@ -43,12 +43,17 @@ public class ArtistController {
 
     @PutMapping("/artist/{id}")
     public ResponseEntity<?> putArtist(@RequestBody Artist edit, @PathVariable long id){
-        Artist artist = artistRepository.findById(id).orElse(null);
-        if (artist != null){
-            artist.setName(edit.getName());
-            return ResponseEntity.status(HttpStatus.CREATED).body(artist);
-        } else {
-            return ResponseEntity.notFound().build();
-        }
+        return artistRepository.findById(id).map( a -> {
+            a.setName(edit.getName());
+            return ResponseEntity.status(HttpStatus.CREATED).body(artistRepository.save(a));
+        }).orElse(null);
+    }
+
+    @DeleteMapping("artist/{id}")
+    public ResponseEntity<?> deleteArtist(@PathVariable long id){
+
+        artistRepository.findById(id).ifPresent(artistRepository::delete);
+
+        return ResponseEntity.noContent().build();
     }
 }
