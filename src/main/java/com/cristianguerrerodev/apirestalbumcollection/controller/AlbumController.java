@@ -1,7 +1,6 @@
 package com.cristianguerrerodev.apirestalbumcollection.controller;
 
-import com.cristianguerrerodev.apirestalbumcollection.dto.AlbumDTO;
-import com.cristianguerrerodev.apirestalbumcollection.dto.CreateAlbumDTO;
+import com.cristianguerrerodev.apirestalbumcollection.dto.albumdto.CreateAlbumDTO;
 import com.cristianguerrerodev.apirestalbumcollection.model.Album;
 import com.cristianguerrerodev.apirestalbumcollection.model.Artist;
 import com.cristianguerrerodev.apirestalbumcollection.model.Label;
@@ -84,9 +83,7 @@ public class AlbumController {
 
     @DeleteMapping("album/{id}")
     public ResponseEntity<?> deleteArtist(@PathVariable long id){
-
         albumRepository.findById(id).ifPresent(albumRepository::delete);
-
         return ResponseEntity.noContent().build();
     }
 

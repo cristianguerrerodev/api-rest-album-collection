@@ -1,6 +1,6 @@
-package com.cristianguerrerodev.apirestalbumcollection.dto.converter;
+package com.cristianguerrerodev.apirestalbumcollection.dto.albumdto.converter;
 
-import com.cristianguerrerodev.apirestalbumcollection.dto.AlbumDTO;
+import com.cristianguerrerodev.apirestalbumcollection.dto.albumdto.AlbumDTO;
 import com.cristianguerrerodev.apirestalbumcollection.model.Album;
 import lombok.RequiredArgsConstructor;
 import org.modelmapper.ModelMapper;
