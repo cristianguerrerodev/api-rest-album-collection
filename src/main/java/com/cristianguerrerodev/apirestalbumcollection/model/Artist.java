@@ -16,6 +16,4 @@ public class Artist {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
     private String name;
-//    @OneToMany(cascade = CascadeType.ALL)
-//    private List<Album> albumList;
 }

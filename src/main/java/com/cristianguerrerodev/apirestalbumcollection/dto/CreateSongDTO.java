@@ -1,4 +1,4 @@
-package com.cristianguerrerodev.apirestalbumcollection.dto.songdto;
+package com.cristianguerrerodev.apirestalbumcollection.dto;
 
 import lombok.Getter;
 import lombok.Setter;

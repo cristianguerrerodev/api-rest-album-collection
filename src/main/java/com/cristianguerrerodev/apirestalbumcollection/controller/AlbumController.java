@@ -1,89 +1,66 @@
 package com.cristianguerrerodev.apirestalbumcollection.controller;
 
-import com.cristianguerrerodev.apirestalbumcollection.dto.albumdto.CreateAlbumDTO;
+import com.cristianguerrerodev.apirestalbumcollection.dto.CreateAlbumDTO;
+import com.cristianguerrerodev.apirestalbumcollection.error.AlbumNotFoundException;
 import com.cristianguerrerodev.apirestalbumcollection.model.Album;
 import com.cristianguerrerodev.apirestalbumcollection.model.Artist;
 import com.cristianguerrerodev.apirestalbumcollection.model.Label;
-import com.cristianguerrerodev.apirestalbumcollection.repository.AlbumRepository;
 import com.cristianguerrerodev.apirestalbumcollection.repository.ArtistRepository;
 import com.cristianguerrerodev.apirestalbumcollection.repository.LabelRepository;
+import com.cristianguerrerodev.apirestalbumcollection.service.AlbumService;
+import com.cristianguerrerodev.apirestalbumcollection.utils.PaginationLinksUtils;
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.util.UriComponentsBuilder;
 
-import java.util.List;
+import javax.servlet.http.HttpServletRequest;
 
 @RestController
 @RequiredArgsConstructor
 public class AlbumController {
 
-    private final AlbumRepository albumRepository;
+    private final AlbumService albumService;
     private final ArtistRepository artistRepository;
     private final LabelRepository labelRepository;
+    private final PaginationLinksUtils paginationLinksUtils;
 
     @GetMapping("/album")
-    public ResponseEntity<?> getAllAlbums(){
-        List<Album> albumList = albumRepository.findAll();
+    public ResponseEntity<?> getAllAlbums(Pageable pageable, HttpServletRequest request) throws AlbumNotFoundException {
+        Page<Album> result = albumService.findAll(pageable);
 
-        if (!albumList.isEmpty()){
-            return ResponseEntity.ok(albumList);
-        }else {
-            return ResponseEntity.notFound().build();
+        if (result.isEmpty()){
+            throw new AlbumNotFoundException();
+        } else {
+            UriComponentsBuilder uriBuilder = UriComponentsBuilder.fromHttpUrl(request.getRequestURL().toString());
+
+            return ResponseEntity.ok()
+                    .header("link", paginationLinksUtils.createLinkHeader(result, uriBuilder))
+                    .body(result);
         }
     }
 
     @GetMapping("/album/{id}")
-    public ResponseEntity<?> getAlbumById(@PathVariable long id){
-        Album album = albumRepository.findById(id).orElse(null);
-
-        if (album != null){
-            return ResponseEntity.ok(album);
-        }else {
-            return ResponseEntity.notFound().build();
-        }
+    public Album getAlbumById(@PathVariable long id) throws AlbumNotFoundException {
+        return albumService.findById(id).orElseThrow(() -> new AlbumNotFoundException(id));
     }
 
     @PostMapping("/album")
     public ResponseEntity<?> postAlbum(@RequestBody CreateAlbumDTO albumDTO){
-//        Album newAlbum = album;
-//        Artist artist = artistRepository.findById(album.get)
-//        newAlbum.setTitle(album.getTitle());
-//        newAlbum.setGenre(album.getGenre());
-//        newAlbum.setYear(album.getYear());
-//        return ResponseEntity.status(HttpStatus.CREATED).body(albumRepository.save(album));
-
-        Album album = new Album();
-        Artist artist = artistRepository.findById(albumDTO.getArtist_id()).orElse(null);
-        Label label = labelRepository.findById(albumDTO.getLabel_id()).orElse(null);
-
-        album.setTitle(albumDTO.getTitle());
-        album.setGenre(albumDTO.getGenre());
-        album.setYear(albumDTO.getYear());
-        album.setArtist(artist);
-        album.setLabel(label);
-
-        return ResponseEntity.status(HttpStatus.CREATED).body(albumRepository.save(album));
+        return ResponseEntity.status(HttpStatus.CREATED).body(albumService.saveAlbum(albumDTO));
     }
 
     @PutMapping("/album/{id}")
-    public ResponseEntity<?> putAlbum(@RequestBody CreateAlbumDTO edit, @PathVariable long id){
-        return albumRepository.findById(id).map( album -> {
-            Artist artist = artistRepository.findById(edit.getArtist_id()).orElse(null);
-            Label label = labelRepository.findById(edit.getLabel_id()).orElse(null);
-
-            album.setTitle(edit.getTitle());
-            album.setGenre(edit.getGenre());
-            album.setYear(edit.getYear());
-            album.setArtist(artist);
-            album.setLabel(label);
-            return ResponseEntity.status(HttpStatus.CREATED).body(albumRepository.save(album));
-        }).orElse(null);
+    public ResponseEntity<?> putAlbum(@RequestBody CreateAlbumDTO edit, @PathVariable long id) throws AlbumNotFoundException {
+        return ResponseEntity.status(HttpStatus.CREATED).body(albumService.editAlbum(id, edit));
     }
 
     @DeleteMapping("album/{id}")
     public ResponseEntity<?> deleteArtist(@PathVariable long id){
-        albumRepository.findById(id).ifPresent(albumRepository::delete);
+        albumService.findById(id).ifPresent(albumService::delete);
         return ResponseEntity.noContent().build();
     }
 

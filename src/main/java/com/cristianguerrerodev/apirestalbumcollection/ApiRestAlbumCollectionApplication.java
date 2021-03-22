@@ -1,19 +1,8 @@
 package com.cristianguerrerodev.apirestalbumcollection;
 
-import com.cristianguerrerodev.apirestalbumcollection.model.Album;
-import com.cristianguerrerodev.apirestalbumcollection.model.Artist;
-import com.cristianguerrerodev.apirestalbumcollection.model.Label;
-import com.cristianguerrerodev.apirestalbumcollection.model.Song;
-import com.cristianguerrerodev.apirestalbumcollection.repository.AlbumRepository;
-import com.cristianguerrerodev.apirestalbumcollection.repository.ArtistRepository;
-import com.cristianguerrerodev.apirestalbumcollection.repository.LabelRepository;
-import com.cristianguerrerodev.apirestalbumcollection.repository.SongRepository;
-import org.springframework.boot.CommandLineRunner;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
-import org.springframework.context.annotation.Bean;
 
-import java.util.List;
 
 @SpringBootApplication
 public class ApiRestAlbumCollectionApplication {
@@ -25,27 +14,49 @@ public class ApiRestAlbumCollectionApplication {
 //    @Bean
 //    CommandLineRunner init(LabelRepository labelRepository, ArtistRepository artistRepository,
 //                           AlbumRepository albumRepository, SongRepository songRepository) {
-//        return (args) -> {
-//            List<Label> labelList = labelRepository.findAll();
-//            List<Artist> artistList  = artistRepository.findAll();
-//            List<Album> albumList = albumRepository.findAll();
-//            List<Song> songList = songRepository.findAll();
+////        return (args) -> {
+////            Album album = albumRepository.findById(1L).orElse(null);
+////            CreateAlbumDTO albumDTO = new CreateAlbumDTO();
+////            albumDTO.setId(album.getId());
+////            albumDTO.setTitle(album.getTitle());
+////            albumDTO.setGenre(album.getGenre());
+////            albumDTO.setYear(album.getYear());
+////            albumDTO.g
+////            Album album = albumRepository.findById(1L).orElse(null);
+////            System.out.println(album.toString());
+////
+////            List<Song> songList = album.getSongList();
+////
+////            if (songList.isEmpty()){
+////                System.out.println("ESTÁ VACÍA");
+////            }else {
+////                System.out.println("NO ESTÁ VACÍA");
+////                for (Song song : songList){
+////                    System.out.println(song.toString());
+////                };
+////            }
 //
-//            for (Label label : labelList) {
-//                System.out.println(label.toString());
-//            }
 //
-//            for (Artist artist : artistList){
-//                System.out.println(artist.toString());
-//            }
-//
-//            for (Album album : albumList){
-//                System.out.println(album.toString());
-//            }
-//
-//            for (Song song : songList){
-//                System.out.println(song.toString());
-//            }
+////            List<Label> labelList = labelRepository.findAll();
+////            List<Artist> artistList  = artistRepository.findAll();
+////            List<Album> albumList = albumRepository.findAll();
+////            List<Song> songList = songRepository.findAll();
+////
+////            for (Label label : labelList) {
+////                System.out.println(label.toString());
+////            }
+////
+////            for (Artist artist : artistList){
+////                System.out.println(artist.toString());
+////            }
+////
+////            for (Album album : albumList){
+////                System.out.println(album.toString());
+////            }
+////
+////            for (Song song : songList){
+////                System.out.println(song.toString());
+////            }
 //        };
 //    }
 

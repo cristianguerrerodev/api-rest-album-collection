@@ -1,6 +1,6 @@
 package com.cristianguerrerodev.apirestalbumcollection.controller;
 
-import com.cristianguerrerodev.apirestalbumcollection.dto.songdto.CreateSongDTO;
+import com.cristianguerrerodev.apirestalbumcollection.dto.CreateSongDTO;
 import com.cristianguerrerodev.apirestalbumcollection.model.Album;
 import com.cristianguerrerodev.apirestalbumcollection.model.Artist;
 import com.cristianguerrerodev.apirestalbumcollection.model.Song;
@@ -43,6 +43,18 @@ public class SongController {
             return ResponseEntity.notFound().build();
         }
     }
+
+//    @GetMapping("/song")
+//    public ResponseEntity<?> getAllSongsFromAnALbum(@RequestParam("album") long id){
+//        Album album = albumRepository.findById(id).orElse(null);
+//
+//        if (album != null){
+//            List<Song> songList = album.getSongList();
+//            return ResponseEntity.ok(songList);
+//        }else{
+//            return ResponseEntity.notFound().build();
+//        }
+//    }
 
     @PostMapping("/song")
     public ResponseEntity<?> postSong(@RequestBody CreateSongDTO save){

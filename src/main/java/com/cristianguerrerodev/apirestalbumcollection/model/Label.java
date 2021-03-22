@@ -16,6 +16,4 @@ public class Label {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
     private String name;
-//    @OneToMany(cascade = CascadeType.ALL, mappedBy = "label")
-//    private List<Album> albumList;
 }
